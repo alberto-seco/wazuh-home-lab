@@ -83,17 +83,17 @@ Desde Kali se lanzó un ataque de fuerza bruta SSH contra el Manager usando Hydr
  
 Wazuh detectó el ataque en tiempo real. En el `alerts.log` se observa el flujo completo: primero la regla 5760 (authentication failed, level 5) por cada intento individual, y después la regla 5763 (level 10) al acumularse suficientes fallos, clasificada automáticamente como **Brute Force** según MITRE ATT&CK T1110.
  
-![Alertas en tiempo real](screenshots/Captura_desde_2026-07-01_18-01-23.png)
+![Alertas en tiempo real](screenshots/b1.png)
 *alerts.log en tiempo real — regla 5760 por intentos individuales y regla 5763 (level 10) al detectar el patrón de fuerza bruta desde 192.168.56.4.*
  
 En el módulo de Threat Hunting del dashboard se visualizaron todas las alertas generadas: 44 fallos de autenticación en las últimas 24 horas, con las técnicas MITRE ATT&CK detectadas (Password Guessing, SSH, Brute Force) y el pico de actividad correspondiente al ataque.
  
-![Threat Hunting Dashboard](screenshots/Captura_desde_2026-07-01_18-09-45.png)
+![Threat Hunting Dashboard](screenshots/b4.png)
 *Dashboard de Threat Hunting — 44 authentication failures, top MITRE ATT&CKs: Brute Force, SSH, Password Guessing. Pico de actividad a las 18:00 coincide con el ataque.*
  
 La tabla de eventos muestra el ciclo completo: fallos de autenticación individuales (regla 5760), detección del brute force (regla 5763, level 10, MITRE T1110) y confirmación del bloqueo automático (regla 651 — Host Blocked by firewall-drop Active Response).
  
-![Tabla de eventos](screenshots/Captura_desde_2026-07-01_18-10-26.png)
+![Tabla de eventos](screenshots/b5.png)
 *Timeline de eventos — reglas 5760, 5763 y 651 (Host Blocked by firewall-drop Active Response).*
  
 ---
@@ -121,12 +121,12 @@ Al dispararse la regla 5763, Wazuh ejecutó automáticamente `firewall-drop` blo
 - **`check_keys`** — verificación de la IP a bloquear
 - **`continue`** — bloqueo aplicado
 - **`delete`** — bloqueo eliminado automáticamente tras 60 segundos
-![Active Response Log](screenshots/Captura_desde_2026-07-01_18-04-10.png)
+![Active Response Log](screenshots/b2.png)
 *active-responses.log — ciclo completo: firewall-drop Starting → add → check_keys → continue → Ended → delete tras 60s.*
  
 El proceso se repitió de forma autónoma cada vez que Kali reactivaba el ataque tras el timeout, demostrando la capacidad de respuesta automatizada continua del sistema.
  
-![Active Response ciclo completo](screenshots/Captura_desde_2026-07-01_18-04-15.png)
+![Active Response ciclo completo](screenshots/b3.png)
 *Segundo ciclo de bloqueo — firedtimes: 2. Wazuh detecta, bloquea y libera de forma completamente autónoma.*
  
 ---
@@ -231,17 +231,17 @@ From Kali, an SSH brute force attack was launched against the Manager using Hydr
  
 Wazuh detected the attack in real time. The `alerts.log` shows the full flow: rule 5760 (authentication failed, level 5) for each individual attempt, escalating to rule 5763 (level 10) once enough failures accumulated, automatically classified as **Brute Force** under MITRE ATT&CK T1110.
  
-![Real-time Alerts](screenshots/Captura_desde_2026-07-01_18-01-23.png)
+![Real-time Alerts](screenshots/b1.png)
 *alerts.log in real time — rule 5760 for individual attempts and rule 5763 (level 10) upon detecting the brute force pattern from 192.168.56.4.*
  
 The Threat Hunting dashboard showed all generated alerts: 44 authentication failures in the last 24 hours, with MITRE ATT&CK techniques detected (Password Guessing, SSH, Brute Force) and a clear activity spike corresponding to the attack.
  
-![Threat Hunting Dashboard](screenshots/Captura_desde_2026-07-01_18-09-45.png)
+![Threat Hunting Dashboard](screenshots/b4.png)
 *Threat Hunting dashboard — 44 authentication failures, top MITRE ATT&CKs: Brute Force, SSH, Password Guessing. Activity spike at 18:00 matches the attack.*
  
 The events table shows the complete cycle: individual authentication failures (rule 5760), brute force detection (rule 5763, level 10, MITRE T1110), and automated block confirmation (rule 651 — Host Blocked by firewall-drop Active Response).
  
-![Events Table](screenshots/Captura_desde_2026-07-01_18-10-26.png)
+![Events Table](screenshots/b5.png)
 *Event timeline — rules 5760, 5763, and 651 (Host Blocked by firewall-drop Active Response).*
  
 ---
@@ -269,12 +269,12 @@ Upon triggering rule 5763, Wazuh automatically executed `firewall-drop`, blockin
 - **`check_keys`** — verification of the IP to block
 - **`continue`** — block applied
 - **`delete`** — block automatically removed after 60 seconds
-![Active Response Log](screenshots/Captura_desde_2026-07-01_18-04-10.png)
+![Active Response Log](screenshots/b2.png)
 *active-responses.log — full cycle: firewall-drop Starting → add → check_keys → continue → Ended → delete after 60s.*
  
 The process repeated autonomously each time Kali resumed the attack after the timeout, demonstrating the system's continuous automated response capability.
  
-![Active Response Full Cycle](screenshots/Captura_desde_2026-07-01_18-04-15.png)
+![Active Response Full Cycle](screenshots/b3.png)
 *Second block cycle — firedtimes: 2. Wazuh detects, blocks, and releases fully autonomously.*
  
 ---
